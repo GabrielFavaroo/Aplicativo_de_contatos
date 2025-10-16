@@ -14,8 +14,8 @@ private ArrayList<Contato> contatos  = new ArrayList<>();
 
 private Scanner teclado;
 
-public ListaTelefonica(Scanner teclado){
-  this.teclado = teclado;
+public ListaTelefonica(){
+
   carregarLista("ListaDeContatos.txt");
 
 }
@@ -41,9 +41,9 @@ System.out.println(cnt.getEmail());
 
 
 
-public void Adicionar(){
+public void Adicionar(String Nome, String Telefone, String Email){
 
-
+/*
 System.out.println("--Adicionando contato--");
     System.out.println("Insira o Nome: ");
 String Nome = teclado.nextLine(); 
@@ -53,9 +53,11 @@ String Telefone = teclado.nextLine();
 
 System.out.println("Insira o Email: ");
 String Email = teclado.nextLine();
-    
+*/
   Contato novoContato = new Contato(Nome,Telefone,Email);
-    contatos.add(novoContato);  
+    contatos.add(novoContato);
+    SalvarLista("ListaDeContatos.txt",false);
+
 
     }
 

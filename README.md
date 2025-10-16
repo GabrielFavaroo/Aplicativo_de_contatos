@@ -17,17 +17,11 @@ Projeto de **Lista Telefônica** desenvolvido em **Java**, com persistência de 
 ## 🗂 Estrutura do projeto
 
 src/
-
 └── br/com/gabrielfavaro/listatelefonica/
-
 ├── model/ → classes de dados (Contato.java)
-
 ├── dao/ → CRUD da lista e persistência (ListaTelefonica.java, Arquivo.java)
-
 ├── service/ → regras de negócio (opcional, para validações futuras)
-
 ├── ui/ → interface com o usuário (Menu.java, futura versão Swing)
-
 └── main/ → classe Main.java para iniciar o programa
 
 markdown
@@ -54,13 +48,18 @@ Copiar código
 1. Clone o repositório:
 
 ```bash
-git clone <>
+git clone https://github.com/OrcadiusDev/contatos.git
+cd contatos
+
+
+```
 Compile e execute:
-
-
+```bash
 cd src
 javac br/com/gabrielfavaro/listatelefonica/main/Main.java
 java br.com.gabrielfavaro.listatelefonica.main.Main
+
+```
 O programa abrirá o menu de console, onde você poderá interagir com a lista de contatos.
 
 📌 Observações
@@ -80,6 +79,3 @@ Melhorar validações de dados (telefone, email)
 Integrar com banco de dados ou armazenamento online
 
 Feito por Gabriel Favaro | Java Developer
-
-
-

@@ -14,9 +14,9 @@ private Arquivo arquivo;
 
 
 
-public Menu (Scanner teclado){
-        this.teclado = teclado;
-        this.lista = new ListaTelefonica(teclado);
+public Menu (){
+
+        this.lista = new ListaTelefonica();
         this.arquivo = new Arquivo();
 
 }
@@ -50,7 +50,7 @@ teclado.nextLine();
                 lista.pesquisar(nomePesquisa);
                 break;
         case 3:
-               lista.Adicionar();
+               //lista.Adicionar(String Nome,String Telefone,String Email);
                break;
         
         case 4:
