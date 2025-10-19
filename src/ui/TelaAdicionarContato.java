@@ -72,7 +72,7 @@ public class TelaAdicionarContato extends JDialog{
         String Email = textoEmail.getText();
 
        lista.Adicionar(Nome,Telefone,Email);
-
+        lista.SalvarLista("ListaDeContatos.txt",false);
        JOptionPane.showMessageDialog(this,"Contato salvo com sucesso");
        dispose();
    }

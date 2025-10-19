@@ -54,7 +54,7 @@ teclado.nextLine();
                break;
         
         case 4:
-                lista.excluirContato();
+                //lista.excluirContato();
                 break;
         case 5: 
         System.out.println("Fechando programa, ate mais! ");

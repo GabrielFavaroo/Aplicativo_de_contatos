@@ -2,23 +2,25 @@ package ui;
 
 
 import dao.ListaTelefonica;
-
+import ui.TelaListarContatos;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TelaPrincipal {
+    private TelaListarContatos tl;
 private ListaTelefonica lista;
 private JFrame framePrincipal;
 JButton sair;
 JButton adicionar;
 JButton sobre;
-JButton listacontatos;
-JButton editar;
-    public TelaPrincipal(ListaTelefonica lista) {
 
+JButton Exibir;
+    public TelaPrincipal(ListaTelefonica lista) {
         framePrincipal = new JFrame();
+        tl = new TelaListarContatos(framePrincipal,lista);
+        tl.setVisible(false);
         this.lista = lista;
         framePrincipal.setTitle("Lista Telefônica");
         framePrincipal.setLocationRelativeTo(null);//isso centralizaria a janela, porem demonstra erros
@@ -45,6 +47,11 @@ JButton editar;
         adicionar.addActionListener(e -> {TelaAdicionarContato dialog = new TelaAdicionarContato(framePrincipal, lista);dialog.setVisible(true);});
 
 
+        Exibir = new JButton("Exibir Lista de contatos");
+        Exibir.setBounds(250,350,200,50);
+        Exibir.addActionListener(e -> tl.setVisible(true));
+
+
 
         sobre = new JButton("Sobre");
         sobre.setBounds(300,500,100,50);
@@ -60,7 +67,7 @@ JButton editar;
 
 
 
-
+        framePrincipal.add(Exibir);
         framePrincipal.add(sobre);
         framePrincipal.add(adicionar);
         framePrincipal.add(sair);
