@@ -21,9 +21,11 @@ public ListaTelefonica(){
 }
 
 
+    public ArrayList<Contato> getContatos() {
+        return contatos;
+    }
 
-
-public void ExibirTodosOsContatos(){
+    public void ExibirTodosOsContatos(){
 
   //System.out.println("--Inicio da Lista--");
 
@@ -37,7 +39,19 @@ System.out.println(cnt.getEmail());
 
 }
 
+public void editarContato(Contato c, String novoNome, String novoEmail, String novoTelefone)//recebe o contato de parametro e já traz os passiveis valores, que sao implementados caso nao sejam vazios nem nulos
 
+{
+    if(!novoNome.isEmpty() && novoNome.isEmpty()){c.setNome(novoNome);}
+    if(!novoTelefone.isEmpty() && novoTelefone.isEmpty()){c.setTelefone(novoTelefone);}
+    if(!novoEmail.isEmpty() && novoEmail.isEmpty()){c.setEmail(novoEmail);}
+
+
+    try {
+        SalvarLista("ListaDeContatos.txt",false);
+
+    }catch (Exception e){}
+}
 
 
 

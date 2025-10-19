@@ -1,7 +1,19 @@
 package model;
 
 public class Contato {
-private String Nome;
+    public void setNome(String nome) {
+        Nome = nome;
+    }
+
+    public void setTelefone(String telefone) {
+        Telefone = telefone;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    private String Nome;
 private String Telefone;
 private String Email;
 
