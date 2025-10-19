@@ -97,7 +97,60 @@ public class TelaListarContatos extends JDialog {
                 }
             }
         });
-        setVisible(true); }
+
+
+        botaoAlterar.addActionListener(ae -> {
+            int linha = tabela.getSelectedRow();
+            if (linha == -1) return;
+           Contato c = lista.getContatos().get(linha);
+
+
+                TelaEditarContato editar = new TelaEditarContato((JFrame) getParent(), lista, c , linha);
+            editar.setVisible(true);
+                atualizarTabela();
+            });
+
+
+
+
+
+
+
+
+
+
+    botaoExcluir.addActionListener(ae -> {
+        int linha = tabela.getSelectedRow();
+        if (linha == -1) return;
+        int ok = JOptionPane.showConfirmDialog(this,"Tem certeza que deseja remover o contato?", "Confirmar",JOptionPane.YES_NO_OPTION);
+        if (ok == JOptionPane.YES_NO_OPTION){
+
+            Contato c = lista.getContatos().get(linha);
+            lista.excluirContato(c);
+            atualizarTabela();
+
+        };
+
+
+
+
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       }
     private void carregarTabela(){ model.setRowCount(0);//inicia a tabelaa zerada
        ArrayList<Contato> contatos = lista.getContatos();
        for (Contato c : contatos) {

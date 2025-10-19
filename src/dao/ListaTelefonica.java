@@ -78,23 +78,18 @@ String Email = teclado.nextLine();
 
 
 
-public void excluirContato(){
+public void excluirContato(Contato contato) {
 
-System.out.println("Insira o nome do contato para Excluir");
-String nomeParaExcluir = teclado.nextLine();
+//System.out.println("Insira o nome do contato para Excluir");
+//String nomeParaExcluir = teclado.nextLine();
+//
+//Contato cnt = pesquisar(nomeParaExcluir);
 
-Contato cnt = pesquisar(nomeParaExcluir);
-
-if( cnt != null){
-  System.out.println(cnt.getNome()+" foi removido da sua lista de contatos");
-  contatos.remove(cnt);}
-else{
-  System.out.println("O contato fornecido não existe na lista, portanto nada foi removido.");
-}  
-
+    if (contato != null) {
+        contatos.remove(contato);
+    }
+    SalvarLista("ListaDeContatos.txt", false);
 }
-
-
 
 
 
@@ -133,6 +128,8 @@ return sb.toString();
 
 
 
+
+
 public void SalvarLista(String arquivo, boolean adicionar){
   try{
     String conteudo = ListaParaTexto();  
@@ -156,6 +153,7 @@ catch( IOException e){
 
 
 public void carregarLista(String arquivo){
+    contatos.clear();
 try {
       
 String conteudo = Arquivo.carregar(arquivo);

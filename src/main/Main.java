@@ -14,7 +14,7 @@ public static void main(String[] args) throws Exception {
 
     lista.carregarLista("ListaDeContatos.txt");
 
-    new TelaPrincipal();
+    new TelaPrincipal(lista);
     //Menu menu = new Menu();
     
    // menu.Mostrarmenu();
