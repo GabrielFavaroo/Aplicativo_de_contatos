@@ -6,16 +6,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class TelaAdicionarContato extends JDialog{
+    private TelaListarContatos tl;
     private ListaTelefonica lista;
     JTextField textoNome;
     JTextField textoTelefone;
     JTextField textoEmail;
 
-   TelaAdicionarContato(JFrame parent,ListaTelefonica lista){
+   TelaAdicionarContato(JFrame parent,ListaTelefonica lista,TelaListarContatos tl){
 
         super(parent,"Adicionar contato",true);
        this.lista = lista;
-
+        this.tl = tl;
        ImageIcon imagem = new ImageIcon(getClass().getResource("/resources/phonebook.png"));//isso garante que qualquer um possa ter a imagem como icone, mesmo fora do computador principal
        setSize(600,400);
        setResizable(false);
@@ -73,8 +74,11 @@ public class TelaAdicionarContato extends JDialog{
 
        lista.Adicionar(Nome,Telefone,Email);
         lista.SalvarLista("ListaDeContatos.txt",false);
+
        JOptionPane.showMessageDialog(this,"Contato salvo com sucesso");
+       tl.atualizarTabela();
        dispose();
+
    }
 
 

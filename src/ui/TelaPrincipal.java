@@ -44,7 +44,7 @@ JButton Exibir;
 
         adicionar = new JButton("Adicionar contato");
         adicionar.setBounds(250,200,200,50);
-        adicionar.addActionListener(e -> {TelaAdicionarContato dialog = new TelaAdicionarContato(framePrincipal, lista);dialog.setVisible(true);});
+        adicionar.addActionListener(e -> {TelaAdicionarContato dialog = new TelaAdicionarContato(framePrincipal, lista,tl);dialog.setVisible(true);});
 
 
         Exibir = new JButton("Exibir Lista de contatos");

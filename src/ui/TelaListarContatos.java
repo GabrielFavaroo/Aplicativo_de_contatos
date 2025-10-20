@@ -151,7 +151,7 @@ public class TelaListarContatos extends JDialog {
 
 
        }
-    private void carregarTabela(){ model.setRowCount(0);//inicia a tabelaa zerada
+    public void carregarTabela(){ model.setRowCount(0);//inicia a tabelaa zerada
        ArrayList<Contato> contatos = lista.getContatos();
        for (Contato c : contatos) {
            model.addRow(new Object[]{c.getNome(), c.getTelefone(), c.getEmail()});//cada contato da lista é passado para a tabela
