@@ -16,13 +16,23 @@ public class Contato {
     private String Nome;
 private String Telefone;
 private String Email;
+private Integer id; 
+
+
+public Contato(Integer id,String Nome, String Telefone, String Email){
+        this.Nome = Nome;
+        this.Telefone = Telefone;
+        this.Email = Email;
+        this.id = id;
+}
+
 
 
 public Contato(String Nome, String Telefone, String Email){
         this.Nome = Nome;
         this.Telefone = Telefone;
         this.Email = Email;
-
+        
 }
 
 
@@ -35,4 +45,12 @@ public String toString(){
         return "Nome: "+ Nome + "Telefone: " + Telefone + "Email: " + Email;
 
 }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
