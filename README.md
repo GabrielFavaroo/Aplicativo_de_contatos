@@ -1,33 +1,28 @@
-📇 AppContatos
+📇 Aplicativo_de_contatos
 
-AppContatos é uma aplicação Java desenvolvida com Swing que tem como objetivo oferecer um sistema simples e eficiente para gerenciamento de contatos pessoais.
-A aplicação permite cadastrar, listar, editar e remover contatos, armazenando os dados em um arquivo local de texto.
-Este projeto foi criado com foco no aprendizado de programação orientada a objetos (POO) e desenvolvimento de interfaces gráficas com Java Swing.
+Aplicativo_de_contatos é uma aplicação Java desenvolvida com Swing que oferece um sistema simples e eficiente para gerenciamento de contatos pessoais. A aplicação permite cadastrar, listar, editar e remover contatos, agora armazenando os dados em um banco de dados PostgreSQL. Este projeto continua com foco em aprendizado de POO e interfaces gráficas com Java Swing.
 
 🧱 Estrutura do Projeto
 
-O projeto é dividido em camadas para manter o código limpo, organizado e de fácil manutenção:
+O projeto mantém a organização em camadas:
 
 AppContatos/
-│
-├── dao/                  # Camada de acesso a dados
+├── dao/                # Camada de acesso a dados (PostgreSQL)
 │   └── ListaTelefonica.java
-│
-├── model/                # Representação das entidades principais
+├── model/              # Representação das entidades principais
 │   └── Contato.java
-│
-├── ui/                   # Interface gráfica com Swing
+├── ui/                 # Interface gráfica com Swing
 │   ├── TelaPrincipal.java
 │   ├── TelaListarContatos.java
 │   ├── TelaAdicionarContato.java
 │   └── TelaEditarContato.java
-│
-└── ListaDeContatos.txt   # Arquivo local onde os dados são persistidos
+└── config/             # Configurações de conexão com PostgreSQL
+    └── DatabaseConfig.java
 
 🧩 Descrição das Camadas
 🔸 model — Camada de Modelo
 
-Contém a classe Contato, que representa um objeto real com atributos:
+Contém a classe Contato, representando um contato com atributos:
 
 nome
 
@@ -35,143 +30,128 @@ telefone
 
 email
 
-Essa classe também implementa os métodos de acesso (getters e setters), garantindo o encapsulamento dos dados.
+Inclui getters e setters para garantir encapsulamento.
 
 🔸 dao — Camada de Dados
 
-Responsável pela manipulação e persistência dos contatos.
-A classe ListaTelefonica atua como um "controlador de dados", sendo capaz de:
+Responsável por manipular contatos no PostgreSQL.
 
-Adicionar e remover contatos;
+A classe ListaTelefonica agora:
 
-Listar todos os registros existentes;
+Conecta ao banco PostgreSQL usando JDBC;
 
-Ler e gravar os dados no arquivo ListaDeContatos.txt utilizando Java I/O.
+Permite adicionar, remover, listar e editar contatos;
 
-A leitura é feita linha por linha, e os dados são separados por delimitadores, permitindo reconstruir os objetos Contato quando o sistema é iniciado.
+Executa queries SQL para persistência e recuperação de dados.
+
+Exemplo de conexão:
+
+Connection conn = DriverManager.getConnection(
+    "jdbc:postgresql://localhost:5432/lista_telefonica", "usuario", "senha"
+);
 
 🔸 ui — Interface Gráfica (Swing)
 
-O pacote ui contém as janelas e diálogos que compõem a interface do usuário:
+Contém janelas e diálogos para interação com o usuário:
 
-Tela	Descrição Detalhada
-TelaPrincipal	Tela inicial do aplicativo, centraliza o acesso às demais funções.
-TelaListarContatos	Exibe todos os contatos em uma lista. Permite selecionar e remover contatos.
-TelaAdicionarContato	Formulário para inserir novos contatos, com campos de nome, telefone e e-mail.
-TelaEditarContato	Permite alterar as informações de um contato existente de forma simples.
+Tela	Descrição
+TelaPrincipal	Janela inicial, centraliza acesso às funções
+TelaListarContatos	Exibe todos os contatos, permite seleção e remoção
+TelaAdicionarContato	Formulário para inserir novos contatos
+TelaEditarContato	Permite alterar informações de um contato existente
 
-Cada tela é construída utilizando JFrame ou JDialog, aplicando o paradigma orientado a eventos, onde cada botão executa uma ação específica através de listeners.
+Cada tela usa JFrame ou JDialog, e botões acionam listeners para executar ações na camada dao.
 
 🖥️ Tecnologias e Conceitos Utilizados
 
 Java SE 8+
 
-Swing para a interface gráfica
+Swing para interface gráfica
 
-Java I/O (FileReader / FileWriter / BufferedReader / BufferedWriter) para leitura e gravação
+JDBC para conexão com PostgreSQL
 
-Collections (ArrayList) para armazenamento em memória
+Collections (ArrayList) para manipulação em memória
 
-POO (encapsulamento, composição, modularização)
+POO (encapsulamento, modularização, composição)
 
 🚀 Funcionalidades Atuais
 
-✅ Adicionar contato com nome, telefone e e-mail
-✅ Listar contatos armazenados localmente
-✅ Remover contatos de forma simples
-✅ Editar informações de contatos já salvos
-✅ Salvar e carregar dados automaticamente do arquivo ListaDeContatos.txt
-✅ Interface gráfica intuitiva e didática
+✅ Adicionar, listar, editar e remover contatos
+✅ Persistência de dados em PostgreSQL
+✅ Interface gráfica intuitiva
+✅ Carregamento automático de contatos do banco ao iniciar a aplicação
 
-⚙️ Como Executar o Projeto
+⚙️ Como Configurar e Executar
+1️⃣ Instalar PostgreSQL
 
-Clone o repositório:
+Baixe do site oficial
+ ou use o gerenciador de pacotes do seu sistema.
 
-git clone https://github.com/OrcadiusDev/AppContatos.git
+2️⃣ Criar Banco de Dados e Tabela
+CREATE DATABASE lista_telefonica;
 
+\c lista_telefonica
 
-Abra o projeto no seu ambiente Java preferido (Eclipse, IntelliJ IDEA, NetBeans ou VS Code com extensão Java).
+CREATE TABLE contatos (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100),
+    telefone VARCHAR(20),
+    email VARCHAR(100)
+);
 
-Compile e execute a classe principal:
+3️⃣ Configurar Conexão no Projeto
 
-javac ui/TelaPrincipal.java
-java ui.TelaPrincipal
+No arquivo config/DatabaseConfig.java:
 
+public class DatabaseConfig {
+    public static final String URL = "jdbc:postgresql://localhost:5432/lista_telefonica";
+    public static final String USER = "usuario";
+    public static final String PASSWORD = "senha";
+}
 
-A janela principal será aberta, permitindo adicionar e gerenciar contatos de forma interativa.
+4️⃣ Executar o Projeto
+git clone https://github.com/GabrielFavaroo/Aplicativo_de_contatos.git
+cd AppContatos
 
-🧭 Status do Projeto
+# Compile
+javac -cp ".:postgresql-<versão>.jar" ui/TelaPrincipal.java
 
-📌 Concluído parcialmente
-
-A base funcional está completa e estável, mas novas melhorias estão planejadas para aprimorar a experiência e as possibilidades de uso.
-
-🔮 Futuras Melhorias Planejadas
-🔍 Filtragem e Busca Inteligente
-
-Implementar busca por nome, telefone ou e-mail em tempo real.
-
-Adicionar filtros personalizados (ex.: contatos com e-mail corporativo, ordem alfabética, etc).
-
-📖 Mais Opções de Leitura e Exportação
-
-Exibição detalhada de um contato ao clicar sobre ele.
-
-Exportar lista de contatos para CSV, JSON ou PDF.
-
-Importação de contatos a partir de arquivos externos.
-
-🧱 Persistência Avançada
-
-Substituir o arquivo .txt por um banco de dados SQLite ou MySQL.
-
-Criar um sistema de backup e restauração automática.
-
-🎨 Interface e Usabilidade
-
-Atualização do layout Swing com ícones, cores e fontes modernas.
-
-Adição de atalhos de teclado e mensagens de confirmação mais claras.
-
-Possibilidade de visualização em modo escuro (dark mode).
-
-🧪 Outras Ideias
-
-Implementação de testes automatizados (JUnit).
-
-Módulo de estatísticas e relatórios (ex.: total de contatos, duplicatas, etc).
-
-Possibilidade de sincronização em nuvem no futuro.
+# Execute
+java -cp ".:postgresql-<versão>.jar" ui.TelaPrincipal
 
 
+Lembre-se de adicionar o driver JDBC do PostgreSQL no classpath (postgresql-<versão>.jar).
 
+🔮 Futuras Melhorias
 
+Busca e filtragem inteligente de contatos
+
+Exportação/importação para CSV, JSON ou PDF
+
+Backup automático e restauração de banco
+
+Interface mais moderna com dark mode e ícones
+
+Testes automatizados com JUnit
+
+Estatísticas e relatórios sobre contatos
+
+Sincronização em nuvem
 
 🤝 Como Contribuir
 
-Se você quiser sugerir melhorias ou colaborar com o projeto:
-
 Faça um fork do repositório
 
-Crie uma nova branch para sua modificação:
+Crie uma branch: git checkout -b minha-feature
 
-git checkout -b minha-feature
+Faça alterações e commit: git commit -m "Descrição da mudança"
 
+Envie para seu fork: git push origin minha-feature
 
-Realize as alterações desejadas e faça o commit:
-
-git commit -m "Melhoria na filtragem de contatos"
-
-
-Envie suas alterações:
-
-git push origin minha-feature
-
-
-Abra um Pull Request descrevendo suas mudanças.
+Abra um Pull Request detalhando suas modificações
 
 👨‍💻 Autor
 
-Gabriel Favaro (OrcadiusDev)
-💼 Desenvolvedor Java e entusiasta em projetos educacionais e aplicações desktop.
-📫 GitHub: github.com/OrcadiusDev
+Gabriel Favaro (GabrielFavaroo)
+💼 Desenvolvedor Java e entusiasta de aplicações desktop
+📫 GitHub: github.com/GabrielFavaroo
