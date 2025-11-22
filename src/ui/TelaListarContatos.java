@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class TelaListarContatos extends JDialog {
 
+    private ArrayList<Contato> contatosEmTela;
     private ListaTelefonica lista;
     private JTable tabela;
     private DefaultTableModel model;
@@ -101,8 +102,8 @@ public class TelaListarContatos extends JDialog {
 
         botaoAlterar.addActionListener(ae -> {
             int linha = tabela.getSelectedRow();
-            if (linha == -1) return;
-           Contato c = lista.getContatos().get(linha);
+            if (linha == -1 || contatosEmTela == null) return;
+           Contato c = contatosEmTela.get(linha);
 
 
                 TelaEditarContato editar = new TelaEditarContato((JFrame) getParent(), lista, c , linha);
@@ -151,9 +152,10 @@ public class TelaListarContatos extends JDialog {
 
 
        }
-    public void carregarTabela(){ model.setRowCount(0);//inicia a tabelaa zerada
-       ArrayList<Contato> contatos = lista.getContatos();
-       for (Contato c : contatos) {
+    public void carregarTabela(){
+        model.setRowCount(0);//inicia a tabelaa zerada
+       contatosEmTela= lista.getContatos();
+       for (Contato c : contatosEmTela) {
            model.addRow(new Object[]{c.getNome(), c.getTelefone(), c.getEmail()});//cada contato da lista é passado para a tabela
        }
 

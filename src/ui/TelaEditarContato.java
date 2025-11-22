@@ -91,7 +91,12 @@ public class TelaEditarContato extends JDialog {
         if (!novoTelefone.isEmpty()) contato.setTelefone (novoTelefone);
         if (!novoEmail.isEmpty()) contato.setEmail (novoEmail);
 
-        lista.SalvarLista("ListaDeContatos.txt",false);
+        lista.editarContato(
+             this.contato,novoNome,novoTelefone,novoEmail
+
+        );
+
+        
         JOptionPane.showMessageDialog(this,"Contato alterado");
         dispose();
 

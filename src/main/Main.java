@@ -12,7 +12,7 @@ public static void main(String[] args) throws Exception {
 
     ListaTelefonica lista = new ListaTelefonica();
 
-    lista.carregarLista("ListaDeContatos.txt");
+    
 
     new TelaPrincipal(lista);
     //Menu menu = new Menu();

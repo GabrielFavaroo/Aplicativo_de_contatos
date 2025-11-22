@@ -3,6 +3,8 @@ package dao;
 import model.Contato;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,16 +16,43 @@ private ArrayList<Contato> contatos  = new ArrayList<>();
 
 private Scanner teclado;
 
-public ListaTelefonica(){
 
-  carregarLista("ListaDeContatos.txt");
+
+public ArrayList<Contato> getContatos(){
+  contatos.clear();
+  String sql = "SELECT id,nome,telefone,email FROM contato ORDER BY nome";
+
+  try(Connection conn = ConexaoDB.getConnection();
+    java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+    java.sql.ResultSet rs = stmt.executeQuery()) {
+
+        if(conn == null) {
+            System.err.println("Conexao com o banco de dados falhou ao listar contatos");
+            return contatos;
+        }
+
+        while (rs.next()) {
+            Integer id = rs.getInt("id");         
+            String nome = rs.getString("nome");
+            String telefone = rs.getString("telefone");
+            String email = rs.getString("email");
+          
+            Contato novoContato = new Contato(id,nome, telefone, email);
+            contatos.add(novoContato);
+
+
+            } }catch(SQLException e) {
+          System.err.println("Erro ao listar contatos do banco de dados");
+          e.printStackTrace();
+        }
+         
+    
+return contatos; 
+
 
 }
 
 
-    public ArrayList<Contato> getContatos() {
-        return contatos;
-    }
 
     public void ExibirTodosOsContatos(){
 
@@ -39,38 +68,71 @@ System.out.println(cnt.getEmail());
 
 }
 
-public void editarContato(Contato c, String novoNome, String novoEmail, String novoTelefone)//recebe o contato de parametro e já traz os passiveis valores, que sao implementados caso nao sejam vazios nem nulos
+public void editarContato(Contato c, String novoNome, String novoEmail, String novoTelefone){//recebe o contato de parametro e já traz os passiveis valores, que sao implementados caso nao sejam vazios nem nulos
 
-{
-    if(!novoNome.isEmpty() && novoNome.isEmpty()){c.setNome(novoNome);}
-    if(!novoTelefone.isEmpty() && novoTelefone.isEmpty()){c.setTelefone(novoTelefone);}
-    if(!novoEmail.isEmpty() && novoEmail.isEmpty()){c.setEmail(novoEmail);}
+  if(c == null || c.getId() == null){
+    System.err.println("Erro ao editar contato, nome ou Id invalidos");
+    return;
+  }
 
-
-    try {
-        SalvarLista("ListaDeContatos.txt",false);
-
-    }catch (Exception e){}
-}
+  if(!novoNome.isEmpty()){c.setNome(novoNome);}
+  if(!novoTelefone.isEmpty()){c.setTelefone(novoTelefone);}
+  if(!novoEmail.isEmpty()){c.setEmail(novoEmail);}
 
 
+  String sql = "UPDATE contato SET nome = ?,telefone = ?,email = ? WHERE id = ?";
 
-public void Adicionar(String Nome, String Telefone, String Email){
+  try(Connection conn = ConexaoDB.getConnection();
+        java.sql.PreparedStatement stmt = conn.prepareStatement(sql)){
 
-/*
-System.out.println("--Adicionando contato--");
-    System.out.println("Insira o Nome: ");
-String Nome = teclado.nextLine(); 
+  
 
-System.out.println("Insira o Telefone: ");
-String Telefone = teclado.nextLine();
+    stmt.setString(1, c.getNome());
+    stmt.setString(2, c.getTelefone());
+    stmt.setString(3, c.getEmail());
+    stmt.setInt(4, c.getId());
+    
+    int linhasAfetadas = stmt.executeUpdate();
+    if (linhasAfetadas > 0) {
+      System.out.println("Contato atualizado com sucesso");
+      
+    }
 
-System.out.println("Insira o Email: ");
-String Email = teclado.nextLine();
-*/
-  Contato novoContato = new Contato(Nome,Telefone,Email);
-    contatos.add(novoContato);
-    SalvarLista("ListaDeContatos.txt",false);
+
+    }catch (SQLException e){
+      System.err.println("Erro ao editar contato no banco de dados");
+      e.printStackTrace();
+    }
+
+
+  }
+
+public void Adicionar(String nome, String telefone, String email){
+
+  String sql = "INSERT INTO contato (nome,telefone,email) VALUES (?,?,?)";
+
+      try (Connection conn = ConexaoDB.getConnection();
+      java.sql.PreparedStatement stmt = conn.prepareStatement(sql)
+      ){
+          if (conn == null) {
+            return;
+            
+          }
+          stmt.setString(1, nome);
+          stmt.setString(2, telefone);
+          stmt.setString(3, email);
+
+          int linhasAfetadas = stmt.executeUpdate();
+
+          if(linhasAfetadas > 0){
+            System.out.println("Contato salvo com sucesso no banco de dados.");
+          }
+
+
+      } catch (SQLException e) { 
+        System.err.println("Erro ao inserir contato no banco de dados.");
+        e.printStackTrace();
+      }
 
 
     }
@@ -80,15 +142,30 @@ String Email = teclado.nextLine();
 
 public void excluirContato(Contato contato) {
 
-//System.out.println("Insira o nome do contato para Excluir");
-//String nomeParaExcluir = teclado.nextLine();
-//
-//Contato cnt = pesquisar(nomeParaExcluir);
+  if (contato.getId() == null || contato == null) 
+{
+  System.out.println("Contato não encontrado");
+}
 
-    if (contato != null) {
+  String sql = "DELETE FROM Contato WHERE id = ?";
+
+      try(Connection conn = ConexaoDB.getConnection();
+      java.sql.PreparedStatement stmt = conn.prepareStatement(sql)){
+
+        stmt.setInt(1,contato.getId());
+        int linhasAfetadas = stmt.executeUpdate();
+
+        if(linhasAfetadas > 0) {
+          System.out.println("Contato (Id: "+contato.getId()+"excluido do banco de dados");
+        }
+
         contatos.remove(contato);
-    }
-    SalvarLista("ListaDeContatos.txt", false);
+
+
+}catch(SQLException e){
+  System.err.println("Erro ao excluir contato");
+  e.printStackTrace();
+}
 }
 
 
@@ -109,95 +186,8 @@ System.out.println("Nada foi encontrado com o nome -" + nomePesquisa+ "- na sua 
   return null ;
 }
 
-
-
-
-public String ListaParaTexto(){
-  StringBuilder sb = new StringBuilder();
-  
-  for (Contato cnt : contatos){
-sb.append(cnt.getNome()).append("\n") ;
-sb.append(cnt.getTelefone()).append( "\n");
-sb.append(cnt.getEmail()).append("\n");
-
-
-  }
-return sb.toString();
-
 }
 
 
 
-
-
-public void SalvarLista(String arquivo, boolean adicionar){
-  try{
-    String conteudo = ListaParaTexto();  
-   
-if(conteudo == null || conteudo.isEmpty()){
-  System.out.println("A lista se encontra vazia");
-return;
-}
- Arquivo.salvar(arquivo, conteudo, adicionar);
-  System.out.println("dao.Arquivo salvo com sucesso");
-  }
-    
-catch( IOException e){
-  System.out.println("Não foi possivel carregar o arquivo");
-}
-
-}
-
-
-
-
-
-public void carregarLista(String arquivo){
-    contatos.clear();
-try {
-      
-String conteudo = Arquivo.carregar(arquivo);
- if(conteudo == null || conteudo.isEmpty()){
-     System.out.println("Nada foi achado");
-     return;
- }
-
-
-ArrayList<String> linhasValidas = new ArrayList<>();
-String[] linhas = conteudo.split("\n");
-
-for( String linha : linhas){
-if(!linha.trim().isEmpty())
-{
-    linhasValidas.add(linha.trim());
-
-}
-}
-
-
-
-  if(conteudo == null|| conteudo.isEmpty()){return;}
-
-
-
-for(int i = 0;i < linhasValidas.size() ; i += 3 ){
-  if( i + 2 >= linhasValidas.size())break;
-
-  String nome=linhasValidas.get(i);
-  String telefone = linhasValidas.get(i + 1);
-  String email = linhasValidas.get(i + 2);
-
-Contato cnt = new Contato(nome, telefone, email);
-contatos.add(cnt);
-
-}
-
-}catch (IOException e) {
-  System.out.println("Não foi possivel carregar o arquivo");
- 
-}
-
-}
- 
-}
 

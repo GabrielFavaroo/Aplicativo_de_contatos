@@ -1,7 +1,7 @@
 package ui;
 
 import dao.ListaTelefonica;
-import dao.Arquivo;
+//import dao.Arquivo;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ public class Menu{
 
 private Scanner teclado;
 private ListaTelefonica lista;
-private Arquivo arquivo;
+//private Arquivo arquivo;
 
 
 
@@ -17,7 +17,7 @@ private Arquivo arquivo;
 public Menu (){
 
         this.lista = new ListaTelefonica();
-        this.arquivo = new Arquivo();
+        //this.arquivo = new Arquivo();
 
 }
 
@@ -58,7 +58,7 @@ teclado.nextLine();
                 break;
         case 5: 
         System.out.println("Fechando programa, ate mais! ");
-        lista.SalvarLista("ListaDeContatos.txt",false);
+        
         
 
                 break;
